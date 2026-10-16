@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vértice.IO · Investigación de Operaciones</title>
+  <meta name="description" content="Vértice.IO: blog de Investigación de Operaciones con artículos y videos de Programación Lineal, Simplex, Dualidad, Transporte, Asignación, PERT/CPM e Inventarios.">
+
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="estilos.css">
+
+  <!-- Fórmulas matemáticas (MathJax): $x_1$ en línea, $$ ... $$ centrada -->
+  <script>window.MathJax = { tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] } };</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" defer></script>
+
+  <!-- Código del blog -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- ===================== ENCABEZADO ===================== -->
+  <header class="encabezado">
+    <div class="contenedor encabezado-fila">
+      <a class="marca" href="#">
+        <svg viewBox="0 0 30 30" aria-hidden="true">
+          <rect x="1" y="1" width="28" height="28" rx="8" fill="#111a2c" stroke="#2d3b5c"/>
+          <path d="M7 22 L7 12 L13 8 L22 15 L22 22 Z" fill="rgba(77,141,255,.25)" stroke="#4d8dff" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="13" cy="8" r="2.6" fill="#ffb547"/>
+        </svg>
+        <span data-marca>Vértice.IO</span>
+      </a>
+      <nav class="menu" id="menu" aria-label="Secciones del blog"></nav>
+    </div>
+  </header>
+
+  <!-- ===================== PORTADA ===================== -->
+  <main class="vista" id="vista-inicio">
+
+    <section class="portada">
+      <canvas id="red" aria-hidden="true"></canvas>
+      <div class="contenedor">
+        <div class="portada-contenido">
+          <p class="etiqueta">Blog de Investigación de Operaciones</p>
+          <h1 data-marca>Vértice.IO</h1>
+          <p class="lema">Donde cada decisión encuentra su óptimo.</p>
+          <p class="sublema">Artículos y videos que explican, paso a paso, los modelos de la Investigación de Operaciones: desde la programación lineal hasta las redes de proyectos y los inventarios.</p>
+          <div class="acciones">
+            <a class="boton" href="#que-es">Comenzar a explorar</a>
+            <a class="boton secundario" href="#temas">Ver los temas</a>
+          </div>
+          <ul class="cifras">
+            <li><strong id="cifra-modulos">3</strong><span>Módulos</span></li>
+            <li><strong id="cifra-temas">9</strong><span>Temas</span></li>
+            <li><strong>2</strong><span>Formatos: artículo y video</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ¿Qué es la Investigación de Operaciones? -->
+    <section class="seccion" id="que-es">
+      <div class="contenedor">
+        <div class="seccion-titulo">
+          <p class="etiqueta">Introducción</p>
+          <h2>¿Qué es la Investigación de Operaciones?</h2>
+        </div>
+
+        <div class="que-es">
+          <div class="que-es-texto">
+            <p>La <strong>Investigación de Operaciones (IO)</strong> es la disciplina que aplica métodos matemáticos, estadísticos y computacionales para tomar las mejores decisiones posibles cuando los recursos son limitados. En lugar de decidir por intuición, la IO representa el problema con un modelo, encuentra la solución óptima y la usa como base para decidir.</p>
+            <p class="suave">Nació durante la Segunda Guerra Mundial, cuando equipos de científicos ayudaron a planificar operaciones militares con recursos escasos. Al terminar la guerra, sus técnicas pasaron a la industria y hoy se usan para planificar la producción, diseñar rutas de distribución, programar proyectos, administrar inventarios y asignar personal.</p>
+            <p class="suave">El nombre de este blog viene de una de sus ideas centrales: en un problema de programación lineal, la mejor solución siempre se encuentra en un <strong>vértice</strong> de la región factible.</p>
+            <ul class="aplicaciones">
+              <li>Producción</li><li>Logística</li><li>Transporte</li><li>Finanzas</li><li>Gestión de proyectos</li><li>Inventarios</li>
+            </ul>
+          </div>
+
+          <!-- Ejemplo: max Z = 3x1 + 5x2, s.a. x1 <= 4, 2x2 <= 12, 3x1 + 2x2 <= 18 -->
+          <figure class="grafica">
+            <svg viewBox="0 0 360 360" role="img" aria-labelledby="g-titulo">
+            <title id="g-titulo">Región factible de un problema de programación lineal con el punto óptimo en (2, 6) y Z = 36</title>
+            <g>
+              <line class="g-rejilla" x1="80" y1="40" x2="80" y2="320"/><line class="g-rejilla" x1="120" y1="40" x2="120" y2="320"/>
+              <line class="g-rejilla" x1="160" y1="40" x2="160" y2="320"/><line class="g-rejilla" x1="200" y1="40" x2="200" y2="320"/>
+              <line class="g-rejilla" x1="240" y1="40" x2="240" y2="320"/><line class="g-rejilla" x1="280" y1="40" x2="280" y2="320"/>
+              <line class="g-rejilla" x1="320" y1="40" x2="320" y2="320"/>
+              <line class="g-rejilla" x1="40" y1="280" x2="320" y2="280"/><line class="g-rejilla" x1="40" y1="240" x2="320" y2="240"/>
+              <line class="g-rejilla" x1="40" y1="200" x2="320" y2="200"/><line class="g-rejilla" x1="40" y1="160" x2="320" y2="160"/>
+              <line class="g-rejilla" x1="40" y1="120" x2="320" y2="120"/><line class="g-rejilla" x1="40" y1="80" x2="320" y2="80"/>
+              <line class="g-rejilla" x1="40" y1="40" x2="320" y2="40"/>
+            </g>
+            <polygon class="g-region" points="40,320 200,320 200,200 120,80 40,80"/>
+            <line class="g-restriccion" x1="200" y1="320" x2="200" y2="40"/>
+            <line class="g-restriccion" x1="40" y1="80" x2="320" y2="80"/>
+            <line class="g-restriccion" x1="93.3" y1="40" x2="280" y2="320"/>
+            <line class="g-iso" x1="53.3" y1="40" x2="320" y2="200"/>
+            <line class="g-eje" x1="40" y1="320" x2="40" y2="34"/>
+            <line class="g-eje" x1="40" y1="320" x2="326" y2="320"/>
+            <g class="g-texto" text-anchor="middle">
+              <text x="40" y="338">0</text><text x="80" y="338">1</text><text x="120" y="338">2</text><text x="160" y="338">3</text>
+              <text x="200" y="338">4</text><text x="240" y="338">5</text><text x="280" y="338">6</text><text x="320" y="338">7</text>
+              <text x="340" y="324">x₁</text>
+            </g>
+            <g class="g-texto" text-anchor="end">
+              <text x="32" y="284">1</text><text x="32" y="244">2</text><text x="32" y="204">3</text>
+              <text x="32" y="164">4</text><text x="32" y="124">5</text><text x="32" y="84">6</text><text x="32" y="44">7</text>
+              <text x="46" y="26">x₂</text>
+            </g>
+            <text class="g-texto" x="206" y="300">x₁ = 4</text>
+            <text class="g-texto" x="252" y="98">2x₂ = 12</text>
+            <text class="g-texto" x="246" y="262">3x₁ + 2x₂ = 18</text>
+            <text class="g-texto" x="236" y="132">Z = 3x₁ + 5x₂</text>
+            <circle class="g-halo" cx="120" cy="80" r="16"/>
+            <circle class="g-punto" cx="120" cy="80" r="7"/>
+            <text class="g-texto-optimo" x="50" y="112">(2, 6) · Z = 36</text>
+          </svg>
+            <figcaption>max Z = 3x₁ + 5x₂ · sujeto a x₁ ≤ 4, 2x₂ ≤ 12, 3x₁ + 2x₂ ≤ 18. El óptimo está en el vértice (2, 6).</figcaption>
+          </figure>
+        </div>
+
+        <ol class="proceso">
+          <li><span class="paso">Paso 1</span><strong>Definir el problema</strong><p>Qué se quiere lograr y qué lo limita.</p></li>
+          <li><span class="paso">Paso 2</span><strong>Construir el modelo</strong><p>Variables, función objetivo y restricciones.</p></li>
+          <li><span class="paso">Paso 3</span><strong>Resolver</strong><p>Aplicar el método adecuado para hallar el óptimo.</p></li>
+          <li><span class="paso">Paso 4</span><strong>Validar</strong><p>Comprobar que la solución tiene sentido en la realidad.</p></li>
+          <li><span class="paso">Paso 5</span><strong>Implementar</strong><p>Llevar la decisión a la práctica y darle seguimiento.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Temas por módulo -->
+    <section class="seccion" id="temas">
+      <div class="contenedor">
+        <div class="seccion-titulo">
+          <p class="etiqueta">Contenido</p>
+          <h2>Temas del curso</h2>
+          <p>Cada tema incluye una explicación de qué es y para qué sirve, un artículo con un problema resuelto y un video tutorial.</p>
+        </div>
+        <div class="modulos" id="modulos"></div>
+      </div>
+    </section>
+
+    <!-- Equipo -->
+    <section class="seccion" id="equipo">
+      <div class="contenedor">
+        <div class="seccion-titulo">
+          <p class="etiqueta">Equipo</p>
+          <h2>Quiénes hacemos este blog</h2>
+          <p>Estudiantes de Ingeniería en Sistemas, curso de Investigación de Operaciones.</p>
+        </div>
+        <ul class="equipo-lista" id="equipo-lista"></ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== PÁGINA DE CADA TEMA ===================== -->
+  <main class="vista contenedor" id="vista-tema" hidden>
+    <div class="tema-cabecera" id="tema-cabecera"></div>
+    <section class="tema-intro" id="tema-intro" aria-label="Descripción del tema"></section>
+    <section class="tema-video" id="tema-video" aria-label="Video del tema"></section>
+    <article class="articulo" id="articulo"></article>
+    <section class="tema-pdf" id="tema-pdf" hidden></section>
+    <nav class="tema-navegacion" id="tema-navegacion" aria-label="Otros temas"></nav>
+  </main>
+
+  <!-- ===================== PIE ===================== -->
+  <footer class="pie">
+    <div class="contenedor pie-fila">
+      <div>
+        <strong data-marca>Vértice.IO</strong>
+        <p data-blog="universidad"></p>
+        <p><span data-blog="facultad"></span> · <span data-blog="curso"></span></p>
+      </div>
+      <div><p id="pie-integrantes"></p></div>
+    </div>
+  </footer>
+
+  <!-- ==================================================================
+       ARTÍCULOS
+       Cada tema tiene su <template>. Peguen ahí el artículo usando estas
+       piezas (copien y peguen las que necesiten):
+
+         <h2>Planteamiento del problema</h2>
+         <p>Texto normal. Variables en línea: $x_1$, $x_2$.</p>
+
+         $$\max Z = 3x_1 + 5x_2$$
+
+         <ul><li>Viñeta</li><li>Otra viñeta</li></ul>
+
+         <div class="tabla"><table>
+           <tr><th>Básica</th><th>x1</th><th>x2</th><th>LD</th></tr>
+           <tr><td>Z</td><td>-3</td><td>-5</td><td>0</td></tr>
+         </table></div>
+
+         <figure>
+           <img src="imagenes/simplex-1.png" alt="Descripción de la imagen">
+           <figcaption>Figura 1. Explicación corta.</figcaption>
+         </figure>
+
+         <div class="nota">Dato o consejo resaltado.</div>
+         <div class="respuesta">Solución óptima: x1 = 2, x2 = 6, Z = 36</div>
+       ================================================================== -->
+
+  <!-- ===== ARTÍCULO M1.1 Formulación de Modelos — péguenlo entre <template> y </template> ===== -->
+  <template id="articulo-formulacion-de-modelos">
+
+  </template>
+
+  <!-- ===== ARTÍCULO M1.2 Programación Lineal — péguenlo entre <template> y </template> ===== -->
+  <template id="articulo-programacion-lineal">
+
+  </template>
+
+  <!-- ===== ARTÍCULO M1.3 Método Gráfico — péguenlo entre <template> y </template> ===== -->
+  <template id="articulo-metodo-grafico">
+
+  </template>
+
+  <!-- ===== ARTÍCULO M1.4 Método Simplex — péguenlo entre <template> y </template> ===== -->
+  <template id="articulo-metodo-simplex">
+
+  </template>
+
+  <!-- ===== ARTÍCULO M2.1 Dualidad y Análisis de Sensibilidad — péguenlo entre <template> y </template> ===== -->
+  <template id="articulo-dualidad-y-sensibilidad">
+
+  </template>
+
+  <!-- ===== ARTÍCULO M2.2 Modelo de Transporte — péguenlo entre <template> y </template> ===== -->
+  <template id="articulo-modelo-de-transporte">
+
+  </template>
+
+  <!-- ===== ARTÍCULO M2.3 Modelo de Asignación — péguenlo entre <template> y </template> ===== -->
+  <template id="articulo-modelo-de-asignacion">
+
+  </template>
+
+  <!-- ===== ARTÍCULO M3.1 Teoría de Redes (PERT/CPM) — péguenlo entre <template> y </template> ===== -->
+  <template id="articulo-pert-cpm">
+
+  </template>
+
+  <!-- ===== ARTÍCULO M3.2 Teoría de Inventarios — péguenlo entre <template> y </template> ===== -->
+  <template id="articulo-teoria-de-inventarios">
+
+  </template>
+
+</body>
+</html>
