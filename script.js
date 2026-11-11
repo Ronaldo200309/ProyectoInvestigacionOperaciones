@@ -1,11 +1,3 @@
-/* ==========================================================================
-   BLOG DE CONOCIMIENTO IO · script.js
-   Lo comparten todas las páginas. No hace falta editarlo para agregar
-   videos o artículos: eso se hace directamente en modulo-1/2/3.html.
-   ========================================================================== */
-
-/* Índice de temas para el buscador del encabezado.
-   Si cambian el nombre de un tema, cámbienlo también aquí. */
 const TEMAS = [
   { modulo: 1, num: "1.1", titulo: "Formulación de Modelos",              url: "modulo-1.html#formulacion-de-modelos" },
   { modulo: 1, num: "1.2", titulo: "Programación Lineal",                 url: "modulo-1.html#programacion-lineal" },
@@ -25,7 +17,6 @@ const TEMAS = [
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const sinAcentos = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
-  /* ---------- Menú en celular ---------- */
   const botonMenu = $(".menu-boton");
   const nav = $("#nav");
   if (botonMenu && nav) {
@@ -33,7 +24,6 @@ const TEMAS = [
       const abierto = nav.classList.toggle("abierto");
       botonMenu.setAttribute("aria-expanded", abierto);
     });
-    // En celular, el primer toque en "Módulo X" abre su submenú
     $$(".desplegable > .nav-link").forEach((enlace) => {
       enlace.addEventListener("click", (e) => {
         if (window.matchMedia("(max-width: 1260px)").matches) {
@@ -50,7 +40,6 @@ const TEMAS = [
     });
   }
 
-  /* ---------- Buscador ---------- */
   const formBuscar = $(".buscar");
   if (formBuscar) {
     const entrada = $("input", formBuscar);
@@ -87,7 +76,6 @@ const TEMAS = [
     document.addEventListener("click", (e) => { if (!formBuscar.contains(e.target)) lista.hidden = true; });
   }
 
-  /* ---------- Carrusel de la portada ---------- */
   const carrusel = $("[data-carrusel]");
   if (carrusel) {
     const slides = $$(".slide", carrusel);
@@ -124,7 +112,6 @@ const TEMAS = [
     reiniciar();
   }
 
-  /* ---------- Filtro de videos en la portada ---------- */
   const filtros = $(".videos-filtros");
   if (filtros) {
     filtros.addEventListener("click", (e) => {
@@ -136,10 +123,6 @@ const TEMAS = [
     });
   }
 
-  /* ---------- Videos de los módulos ----------
-     Cada <div class="video" data-video="..."> se convierte aquí en el
-     reproductor. Acepta enlaces de YouTube (normal, youtu.be, shorts),
-     de Google Drive, o un archivo local como "videos/simplex.mp4". */
   $$(".video[data-video]").forEach((caja) => {
     const enlace = caja.dataset.video.trim();
     const titulo = caja.dataset.titulo || "Video tutorial";
@@ -165,6 +148,32 @@ const TEMAS = [
     caja.innerHTML = `<video controls preload="metadata" src="${esc(enlace)}"></video>`;
   });
 
-  /* ---------- Año del pie ---------- */
+  $$(".documento[data-documento]").forEach((caja) => {
+    const enlace = caja.dataset.documento.trim();
+    const titulo = caja.dataset.titulo || "Artículo";
+
+    if (!enlace) {
+      caja.innerHTML = `<div class="pendiente"><strong>Artículo en preparación</strong>
+        El documento de este módulo se mostrará aquí.</div>`;
+      return;
+    }
+
+    let vista = "", abrir = enlace, m;
+    if ((m = enlace.match(/docs\.google\.com\/(document|presentation|spreadsheets)\/d\/([\w-]+)/))) {
+      vista = `https://docs.google.com/${m[1]}/d/${m[2]}/preview`;
+    } else if ((m = enlace.match(/drive\.google\.com\/file\/d\/([\w-]+)/) || enlace.match(/[?&]id=([\w-]+)/))) {
+      vista = `https://drive.google.com/file/d/${m[1]}/preview`;
+      abrir = `https://drive.google.com/file/d/${m[1]}/view`;
+    } else {
+      vista = enlace;
+    }
+
+    caja.innerHTML = `
+      <div class="documento-marco">
+        <iframe src="${esc(vista)}" title="${esc(titulo)}" loading="lazy" allow="autoplay"></iframe>
+      </div>
+      <a class="boton oscuro flecha-der documento-abrir" href="${esc(abrir)}" target="_blank" rel="noopener">Abrir el artículo completo</a>`;
+  });
+
   $$("[data-anio]").forEach((el) => (el.textContent = new Date().getFullYear()));
 })();
