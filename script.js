@@ -142,7 +142,9 @@ const TEMAS = [
     }
     m = enlace.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
     if (m) {
-      caja.innerHTML = `<iframe src="https://drive.google.com/file/d/${m[1]}/preview" title="${esc(titulo)}" allow="autoplay" allowfullscreen loading="lazy"></iframe>`;
+      caja.classList.add("video-drive");
+      caja.innerHTML = `<iframe src="https://drive.google.com/file/d/${m[1]}/preview" title="${esc(titulo)}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+      caja.insertAdjacentHTML("afterend", `<a class="boton oscuro flecha-der video-abrir" href="https://drive.google.com/file/d/${m[1]}/view" target="_blank" rel="noopener">Ver en pantalla completa</a>`);
       return;
     }
     caja.innerHTML = `<video controls preload="metadata" src="${esc(enlace)}"></video>`;
