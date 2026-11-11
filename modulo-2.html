@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Módulo 2: Dualidad, Transporte y Asignación · Blog de Conocimiento IO</title>
+  <meta name="description" content="En este módulo estudiarás qué revela el problema dual sobre el valor de los recursos, y cómo resolver los modelos especiales de transporte y asignación al menor costo.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Caveat:wght@700&display=swap">
+  <link rel="stylesheet" href="estilos.css">
+  <!-- Fórmulas matemáticas en los artículos: $x_1$ en línea, $$ ... $$ centrada -->
+  <script>window.MathJax = { tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] } };</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- ===================== ENCABEZADO (igual en todas las páginas) ===================== -->
+  <header class="cabecera">
+    <div class="contenedor-ancho cabecera-fila">
+      <a class="umg" href="index.html">
+        <span class="umg-escudo">
+          <span class="sello" aria-hidden="true">UMG</span>
+          <!-- LOGO DE LA UNIVERSIDAD: guarden la imagen como imagenes/logo-umg.png -->
+          <img src="imagenes/logo-umg.png" alt="Escudo de la Universidad Mariano Gálvez" onerror="this.remove()">
+        </span>
+        <span class="umg-nombre">Universidad Mariano Gálvez<br>de Guatemala</span>
+      </a>
+      <span class="separador" aria-hidden="true"></span>
+      <a class="marca" href="index.html">
+        <svg viewBox="0 0 62 48" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<rect x="13" y="22" width="6" height="14" rx="1" fill="#6cb6ff"/><rect x="22" y="16" width="6" height="20" rx="1" fill="#ffffff"/>
+<rect x="31" y="11" width="6" height="25" rx="1" fill="#6cb6ff"/><rect x="40" y="5" width="6" height="31" rx="1" fill="#ffffff"/>
+<path d="M10 22 L24 12 L32 15 L50 2" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4 34 Q18 30 31 37 Q44 30 58 34 V44 Q44 39 31 46 Q18 39 4 44 Z" fill="#ffffff" stroke="#6cb6ff" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M31 37 V46" stroke="#0a2556" stroke-width="1.5"/></svg>
+        <span><strong>Blog de Conocimiento IO</strong><em>Aplicaciones Prácticas</em></span>
+      </a>
+
+      <button class="menu-boton" type="button" aria-expanded="false" aria-controls="nav" aria-label="Abrir menú"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+      <nav class="nav" id="nav" aria-label="Menú principal">
+        <ul>
+          <li><a class="nav-link" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 3l9 8v10h-6v-6H9v6H3z" fill="currentColor"/></svg>Inicio</a></li>
+          <li class="desplegable">
+            <a class="nav-link" href="modulo-1.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Módulo 1</a>
+            <ul class="submenu"><li><a href="modulo-1.html#formulacion-de-modelos"><b>1.1</b>Formulación de Modelos</a></li><li><a href="modulo-1.html#programacion-lineal"><b>1.2</b>Programación Lineal</a></li><li><a href="modulo-1.html#metodo-grafico"><b>1.3</b>Método Gráfico</a></li><li><a href="modulo-1.html#metodo-simplex"><b>1.4</b>Método Simplex</a></li><li><a class="ver-modulo" href="modulo-1.html">Ver todo el Módulo 1 →</a></li></ul>
+          </li>
+          <li class="desplegable">
+            <a class="nav-link activo" href="modulo-2.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Módulo 2</a>
+            <ul class="submenu"><li><a href="modulo-2.html#dualidad-y-sensibilidad"><b>2.1</b>Dualidad y Análisis de Sensibilidad</a></li><li><a href="modulo-2.html#modelo-de-transporte"><b>2.2</b>Modelo de Transporte</a></li><li><a href="modulo-2.html#modelo-de-asignacion"><b>2.3</b>Modelo de Asignación</a></li><li><a class="ver-modulo" href="modulo-2.html">Ver todo el Módulo 2 →</a></li></ul>
+          </li>
+          <li class="desplegable">
+            <a class="nav-link" href="modulo-3.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Módulo 3</a>
+            <ul class="submenu"><li><a href="modulo-3.html#pert-cpm"><b>3.1</b>Teoría de Redes (PERT/CPM)</a></li><li><a href="modulo-3.html#teoria-de-inventarios"><b>3.2</b>Teoría de Inventarios</a></li><li><a class="ver-modulo" href="modulo-3.html">Ver todo el Módulo 3 →</a></li></ul>
+          </li>
+          <li><a class="nav-link" href="index.html#videos"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" fill="currentColor"/><path d="M10 9v6l5-3z" fill="#0a2556"/></svg>Videos</a></li>
+          <li><a class="nav-link" href="index.html#nosotros"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5" fill="currentColor"/><circle cx="17" cy="9" r="2.8" fill="currentColor"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6zM15 20c0-2-.6-3.6-1.7-4.8 3.6-.6 7.7.8 8.7 4.8z" fill="currentColor"/></svg>Nosotros</a></li>
+        </ul>
+        <form class="buscar" role="search">
+          <input id="buscar" type="search" placeholder="Buscar..." autocomplete="off" aria-label="Buscar un tema">
+          <button type="submit" aria-label="Buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+          <ul class="resultados" hidden></ul>
+        </form>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===================== PORTADA DEL MÓDULO ===================== -->
+    <section class="hero modulo-hero">
+      <div class="contenedor-ancho slide-fila">
+        <div>
+          <nav class="migas" aria-label="Ruta"><a href="index.html">Inicio</a><span>/</span><span>Módulo 2</span></nav>
+          <span class="pastilla grande" style="background:rgba(255,255,255,.16)">Módulo 2</span>
+          <h1>Dualidad, Transporte y Asignación</h1>
+          <p>En este módulo estudiarás qué revela el problema dual sobre el valor de los recursos, y cómo resolver los modelos especiales de transporte y asignación al menor costo.</p>
+          <ul class="datos"><li>3 temas</li><li>3 videos tutoriales</li><li>Artículos y procedimientos</li></ul>
+          <ul class="indice-temas" aria-label="Temas del módulo"><li><a href="#dualidad-y-sensibilidad"><b>2.1</b>Dualidad y Análisis de Sensibilidad</a></li><li><a href="#modelo-de-transporte"><b>2.2</b>Modelo de Transporte</a></li><li><a href="#modelo-de-asignacion"><b>2.3</b>Modelo de Asignación</a></li></ul>
+        </div>
+        <div class="slide-ilus"><svg viewBox="0 0 440 310" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="440" height="310" rx="22" fill="#ffffff" fill-opacity=".96"/><svg x="20" y="20" width="400" height="270" viewBox="0 0 240 160" role="img" aria-label="Envíos desde orígenes hacia destinos" xmlns="http://www.w3.org/2000/svg"><defs><marker id="pf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0a2556"/></marker></defs><circle cx="20" cy="27" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="20" cy="45" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="20" cy="72" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="20" cy="90" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="20" cy="117" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="20" cy="135" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="29" cy="36" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="29" cy="54" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="29" cy="81" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="29" cy="99" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="29" cy="126" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="29" cy="144" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="38" cy="18" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="38" cy="45" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="38" cy="63" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="38" cy="90" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="38" cy="108" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="38" cy="135" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="47" cy="27" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="47" cy="54" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="47" cy="72" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="47" cy="99" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="47" cy="117" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="47" cy="144" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="56" cy="18" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="56" cy="36" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="56" cy="63" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="56" cy="81" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="56" cy="108" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="56" cy="126" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="65" cy="27" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="65" cy="45" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="65" cy="72" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="65" cy="90" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="65" cy="117" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="65" cy="135" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="74" cy="36" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="74" cy="54" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="74" cy="81" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="74" cy="99" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="74" cy="126" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="74" cy="144" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="83" cy="18" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="83" cy="45" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="83" cy="63" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="83" cy="90" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="83" cy="108" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="83" cy="135" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="92" cy="27" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="92" cy="54" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="92" cy="72" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="92" cy="99" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="92" cy="117" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="92" cy="144" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="101" cy="18" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="101" cy="36" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="101" cy="63" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="101" cy="81" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="101" cy="108" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="101" cy="126" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="110" cy="27" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="110" cy="45" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="110" cy="72" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="110" cy="90" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="110" cy="117" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="110" cy="135" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="119" cy="36" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="119" cy="54" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="119" cy="81" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="119" cy="99" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="119" cy="126" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="119" cy="144" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="128" cy="18" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="128" cy="45" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="128" cy="63" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="128" cy="90" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="128" cy="108" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="128" cy="135" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="137" cy="27" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="137" cy="54" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="137" cy="72" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="137" cy="99" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="137" cy="117" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="137" cy="144" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="146" cy="18" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="146" cy="36" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="146" cy="63" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="146" cy="81" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="146" cy="108" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="146" cy="126" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="155" cy="27" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="155" cy="45" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="155" cy="72" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="155" cy="90" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="155" cy="117" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="155" cy="135" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="164" cy="36" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="164" cy="54" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="164" cy="81" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="164" cy="99" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="164" cy="126" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="164" cy="144" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="173" cy="18" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="173" cy="45" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="173" cy="63" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="173" cy="90" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="173" cy="108" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="173" cy="135" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="182" cy="27" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="182" cy="54" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="182" cy="72" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="182" cy="99" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="182" cy="117" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="182" cy="144" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="191" cy="18" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="191" cy="36" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="191" cy="63" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="191" cy="81" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="191" cy="108" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="191" cy="126" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="200" cy="27" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="200" cy="45" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="200" cy="72" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="200" cy="90" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="200" cy="117" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="200" cy="135" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="209" cy="36" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="209" cy="54" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="209" cy="81" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="209" cy="99" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="209" cy="126" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="209" cy="144" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="218" cy="18" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="218" cy="45" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="218" cy="63" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="218" cy="90" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="218" cy="108" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="218" cy="135" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="227" cy="27" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="227" cy="54" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="227" cy="72" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="227" cy="99" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="227" cy="117" r="1.6" fill="#0f5ad6" fill-opacity=".25"/><circle cx="227" cy="144" r="1.6" fill="#0f5ad6" fill-opacity=".25"/>
+<path d="M48 60 C34 44 34 36 34 32 A14 14 0 1 1 62 32 C62 36 62 44 48 60 Z" fill="#0f5ad6" stroke="#0a2556" stroke-width="1.5"/><circle cx="48" cy="32" r="5.5" fill="#fff"/><path d="M200 52 C186 36 186 28 186 24 A14 14 0 1 1 214 24 C214 28 214 36 200 52 Z" fill="#0f5ad6" stroke="#0a2556" stroke-width="1.5"/><circle cx="200" cy="24" r="5.5" fill="#fff"/><path d="M48 132 C34 116 34 108 34 104 A14 14 0 1 1 62 104 C62 108 62 116 48 132 Z" fill="#0f5ad6" stroke="#0a2556" stroke-width="1.5"/><circle cx="48" cy="104" r="5.5" fill="#fff"/>
+<path d="M70 36 H176" stroke="#1673ff" stroke-width="2.4" stroke-dasharray="5 5" marker-end="url(#pf)"/>
+<path d="M70 110 H108" stroke="#1673ff" stroke-width="2.4" stroke-dasharray="5 5" marker-end="url(#pf)"/>
+<path d="M200 58 V82" stroke="#1673ff" stroke-width="2.4" stroke-dasharray="5 5" marker-end="url(#pf)"/>
+<g transform="translate(116 88)">
+  <rect x="0" y="0" width="62" height="38" rx="4" fill="#fff" stroke="#0a2556" stroke-width="3"/>
+  <path d="M62 10 H86 L100 24 V38 H62 Z" fill="#0a2556"/><rect x="70" y="14" width="14" height="10" rx="1.5" fill="#cfe3ff"/>
+  <circle cx="18" cy="42" r="8" fill="#0a2556"/><circle cx="18" cy="42" r="3" fill="#fff"/>
+  <circle cx="82" cy="42" r="8" fill="#0a2556"/><circle cx="82" cy="42" r="3" fill="#fff"/>
+</g></svg></svg></div>
+      </div>
+    </section>
+
+    <div class="seccion contenedor-ancho">
+      <h2 class="titulo-linea"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.8 5.7 21.4l1.5-7.1L1.8 9.4 9 8.6z" fill="currentColor"/></svg>Temas del Módulo 2</span></h2>
+
+    <!-- ████████████████████████████████████████████████████████████████████
+         TEMA 2.1 · DUALIDAD Y ANÁLISIS DE SENSIBILIDAD
+         ████████████████████████████████████████████████████████████████████ -->
+    <section class="tarjeta tema" id="dualidad-y-sensibilidad">
+      <div class="tema-cabeza">
+        <span class="tema-num">2.1</span>
+        <div><h2>Dualidad y Análisis de Sensibilidad</h2><p>Cuánto vale cada recurso y qué tanto puede cambiar el modelo sin alterar la solución.</p></div>
+      </div>
+
+      <div class="tema-fila">
+        <!-- Definición general -->
+        <div class="bloque definicion">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v15h-6a2 2 0 0 0-2 2 2 2 0 0 0-2-2H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 5v16" stroke="currentColor" stroke-width="2"/></svg>¿Qué es?</h3>
+              <p>Todo modelo de programación lineal, llamado <strong>primal</strong>, tiene asociado otro modelo llamado <strong>dual</strong>, construido con los mismos datos. Si el primal maximiza la ganancia con recursos limitados, el dual minimiza el valor de esos recursos. En el óptimo, ambos tienen el mismo valor de la función objetivo.</p>
+              <p>Las variables duales se interpretan como <strong>precios sombra</strong>: indican cuánto mejora la función objetivo por cada unidad adicional de un recurso. El <strong>análisis de sensibilidad</strong> estudia cuánto pueden cambiar los coeficientes y los recursos sin que cambie la solución óptima, para tomar decisiones sin resolver todo de nuevo.</p>
+          <p class="formula-clave"><b>Idea clave:</b> Primal: Max Z = cx, Ax ≤ b ⇄ Dual: Min W = bᵀy, Aᵀy ≥ cᵀ, con Z* = W*</p>
+        </div>
+
+        <!-- Video tutorial -->
+        <div class="bloque">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 10 6-3v10l-6-3z" fill="currentColor"/></svg>Video tutorial</h3>
+              <!-- ╔══════════════════════════════════════════════════════════════╗
+                   ║  ▶ VIDEO 1 DEL MÓDULO 2: Dualidad y Análisis de Sensibilidad         ║
+                   ║  Peguen el enlace de YouTube entre las comillas de data-video ║
+                   ║  Ejemplo: data-video="https://youtu.be/AbCdEfGhIjK"           ║
+                   ╚══════════════════════════════════════════════════════════════╝ -->
+              <div class="video" id="video-2-1" data-video="" data-titulo="Video 1 · Dualidad y Análisis de Sensibilidad"></div>
+              <!-- ═════════════════════ FIN DEL VIDEO 1 ═════════════════════ -->
+              <p class="video-titulo">Video 1 · Dualidad y Análisis de Sensibilidad</p>
+        </div>
+      </div>
+
+      <!-- Procedimiento paso a paso -->
+      <div class="bloque procedimiento">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="4" cy="6" r="2" fill="currentColor"/><circle cx="4" cy="12" r="2" fill="currentColor"/><circle cx="4" cy="18" r="2" fill="currentColor"/></svg>Procedimiento paso a paso</h3>
+        <ol>
+                <li><strong>Escribir el primal en forma canónica</strong><span>Para maximizar, todas las restricciones deben ser ≤ y todas las variables ≥ 0.</span></li>
+                <li><strong>Asignar una variable dual a cada restricción</strong><span>Si el primal tiene m restricciones, el dual tendrá m variables: y₁, y₂, …, yₘ.</span></li>
+                <li><strong>Construir el dual</strong><span>Los lados derechos del primal pasan a ser los coeficientes de la función objetivo del dual, la matriz se transpone, Max cambia a Min y ≤ cambia a ≥.</span></li>
+                <li><strong>Leer los precios sombra</strong><span>En la tabla simplex óptima del primal, los coeficientes de las holguras en la fila Z son los valores óptimos de las variables duales.</span></li>
+                <li><strong>Analizar los coeficientes de Z</strong><span>Calcular el rango en que puede variar cada coeficiente cⱼ sin que cambie la solución óptima.</span></li>
+                <li><strong>Analizar los lados derechos</strong><span>Calcular el rango en que puede variar cada recurso bᵢ sin que cambie la base óptima y estimar el nuevo Z con el precio sombra.</span></li>
+        </ol>
+      </div>
+
+      <!-- Artículo -->
+      <div class="bloque">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 11h8M9 15h8M9 19h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Artículo</h3>
+        <article class="articulo">
+          <!-- ╔══════════════════════════════════════════════════════════════╗
+               ║  ARTÍCULO 2.1 · Dualidad y Análisis de Sensibilidad             ║
+               ║  Borren el bloque <div class="pendiente"> y peguen aquí el    ║
+               ║  artículo. Ejemplos de lo que pueden usar al final del archivo.║
+               ╚══════════════════════════════════════════════════════════════╝ -->
+          <div class="pendiente">
+            <strong>Artículo en preparación</strong>
+            El desarrollo completo de este tema, con un ejercicio resuelto, se publicará aquí.
+          </div>
+          <!-- ══════════════════════ FIN DEL ARTÍCULO 2.1 ══════════════════════ -->
+        </article>
+      </div>
+    </section>
+
+    <!-- ████████████████████████████████████████████████████████████████████
+         TEMA 2.2 · MODELO DE TRANSPORTE
+         ████████████████████████████████████████████████████████████████████ -->
+    <section class="tarjeta tema" id="modelo-de-transporte">
+      <div class="tema-cabeza">
+        <span class="tema-num">2.2</span>
+        <div><h2>Modelo de Transporte</h2><p>Distribuir un producto desde varios orígenes hacia varios destinos al menor costo total.</p></div>
+      </div>
+
+      <div class="tema-fila">
+        <!-- Definición general -->
+        <div class="bloque definicion">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v15h-6a2 2 0 0 0-2 2 2 2 0 0 0-2-2H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 5v16" stroke="currentColor" stroke-width="2"/></svg>¿Qué es?</h3>
+              <p>El <strong>modelo de transporte</strong> es un tipo especial de programación lineal que busca la forma más económica de enviar un producto desde varios <strong>orígenes</strong> (plantas, bodegas) hacia varios <strong>destinos</strong> (clientes, tiendas), cumpliendo la oferta disponible en cada origen y la demanda de cada destino.</p>
+              <p>Se resuelve en dos etapas: primero se obtiene una solución inicial con <strong>esquina noroeste, costo mínimo o aproximación de Vogel</strong>, y luego se mejora con el método de multiplicadores (MODI) o de salto de piedra hasta llegar al costo total mínimo.</p>
+          <p class="formula-clave"><b>Idea clave:</b> Min Z = Σᵢ Σⱼ cᵢⱼ xᵢⱼ, sujeto a la oferta de cada origen y la demanda de cada destino</p>
+        </div>
+
+        <!-- Video tutorial -->
+        <div class="bloque">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 10 6-3v10l-6-3z" fill="currentColor"/></svg>Video tutorial</h3>
+              <!-- ╔══════════════════════════════════════════════════════════════╗
+                   ║  ▶ VIDEO 2 DEL MÓDULO 2: Modelo de Transporte                        ║
+                   ║  Peguen el enlace de YouTube entre las comillas de data-video ║
+                   ║  Ejemplo: data-video="https://youtu.be/AbCdEfGhIjK"           ║
+                   ╚══════════════════════════════════════════════════════════════╝ -->
+              <div class="video" id="video-2-2" data-video="" data-titulo="Video 2 · Modelo de Transporte"></div>
+              <!-- ═════════════════════ FIN DEL VIDEO 2 ═════════════════════ -->
+              <p class="video-titulo">Video 2 · Modelo de Transporte</p>
+        </div>
+      </div>
+
+      <!-- Procedimiento paso a paso -->
+      <div class="bloque procedimiento">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="4" cy="6" r="2" fill="currentColor"/><circle cx="4" cy="12" r="2" fill="currentColor"/><circle cx="4" cy="18" r="2" fill="currentColor"/></svg>Procedimiento paso a paso</h3>
+        <ol>
+                <li><strong>Construir la tabla de transporte</strong><span>Colocar el costo unitario cᵢⱼ en cada celda, la oferta de cada origen al final de su fila y la demanda de cada destino al final de su columna.</span></li>
+                <li><strong>Balancear el problema</strong><span>Si la oferta total no es igual a la demanda total, agregar un origen o destino ficticio con costo cero por la diferencia.</span></li>
+                <li><strong>Obtener una solución inicial</strong><span>Asignar envíos con esquina noroeste, costo mínimo o Vogel hasta agotar todas las ofertas y demandas.</span></li>
+                <li><strong>Verificar las celdas asignadas</strong><span>Deben existir m + n − 1 celdas básicas. Si hay menos, la solución es degenerada y se agrega una asignación de valor cero.</span></li>
+                <li><strong>Aplicar la prueba de optimalidad (MODI)</strong><span>Calcular uᵢ y vⱼ con uᵢ + vⱼ = cᵢⱼ en las celdas asignadas y el costo reducido cᵢⱼ − uᵢ − vⱼ en las celdas vacías.</span></li>
+                <li><strong>Mejorar la solución</strong><span>Si algún costo reducido es negativo, formar el circuito cerrado desde esa celda y reasignar. Repetir hasta que todos sean ≥ 0 y calcular el costo total.</span></li>
+        </ol>
+      </div>
+
+      <!-- Artículo -->
+      <div class="bloque">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 11h8M9 15h8M9 19h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Artículo</h3>
+        <article class="articulo">
+          <!-- ╔══════════════════════════════════════════════════════════════╗
+               ║  ARTÍCULO 2.2 · Modelo de Transporte                            ║
+               ║  Borren el bloque <div class="pendiente"> y peguen aquí el    ║
+               ║  artículo. Ejemplos de lo que pueden usar al final del archivo.║
+               ╚══════════════════════════════════════════════════════════════╝ -->
+          <div class="pendiente">
+            <strong>Artículo en preparación</strong>
+            El desarrollo completo de este tema, con un ejercicio resuelto, se publicará aquí.
+          </div>
+          <!-- ══════════════════════ FIN DEL ARTÍCULO 2.2 ══════════════════════ -->
+        </article>
+      </div>
+    </section>
+
+    <!-- ████████████████████████████████████████████████████████████████████
+         TEMA 2.3 · MODELO DE ASIGNACIÓN
+         ████████████████████████████████████████████████████████████████████ -->
+    <section class="tarjeta tema" id="modelo-de-asignacion">
+      <div class="tema-cabeza">
+        <span class="tema-num">2.3</span>
+        <div><h2>Modelo de Asignación</h2><p>Asignar cada tarea a un único recurso para minimizar el costo o el tiempo total.</p></div>
+      </div>
+
+      <div class="tema-fila">
+        <!-- Definición general -->
+        <div class="bloque definicion">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v15h-6a2 2 0 0 0-2 2 2 2 0 0 0-2-2H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 5v16" stroke="currentColor" stroke-width="2"/></svg>¿Qué es?</h3>
+              <p>El <strong>modelo de asignación</strong> es un caso particular del modelo de transporte en el que cada recurso (una persona, una máquina, un vehículo) se asigna a <strong>exactamente una tarea</strong>, y cada tarea recibe exactamente un recurso. El objetivo es minimizar el costo o el tiempo total, o maximizar la ganancia.</p>
+              <p>El método más utilizado para resolverlo es el <strong>método húngaro</strong>, que trabaja sobre la matriz de costos reduciendo filas y columnas hasta encontrar un conjunto de ceros que permita una asignación completa.</p>
+          <p class="formula-clave"><b>Idea clave:</b> Min Z = Σᵢ Σⱼ cᵢⱼ xᵢⱼ, con xᵢⱼ = 1 si el recurso i realiza la tarea j y 0 si no</p>
+        </div>
+
+        <!-- Video tutorial -->
+        <div class="bloque">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 10 6-3v10l-6-3z" fill="currentColor"/></svg>Video tutorial</h3>
+              <!-- ╔══════════════════════════════════════════════════════════════╗
+                   ║  ▶ VIDEO 3 DEL MÓDULO 2: Modelo de Asignación                        ║
+                   ║  Peguen el enlace de YouTube entre las comillas de data-video ║
+                   ║  Ejemplo: data-video="https://youtu.be/AbCdEfGhIjK"           ║
+                   ╚══════════════════════════════════════════════════════════════╝ -->
+              <div class="video" id="video-2-3" data-video="" data-titulo="Video 3 · Modelo de Asignación"></div>
+              <!-- ═════════════════════ FIN DEL VIDEO 3 ═════════════════════ -->
+              <p class="video-titulo">Video 3 · Modelo de Asignación</p>
+        </div>
+      </div>
+
+      <!-- Procedimiento paso a paso -->
+      <div class="bloque procedimiento">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="4" cy="6" r="2" fill="currentColor"/><circle cx="4" cy="12" r="2" fill="currentColor"/><circle cx="4" cy="18" r="2" fill="currentColor"/></svg>Procedimiento paso a paso</h3>
+        <ol>
+                <li><strong>Construir la matriz de costos</strong><span>Filas para los recursos y columnas para las tareas. Si no es cuadrada, agregar filas o columnas ficticias con costo cero.</span></li>
+                <li><strong>Convertir si es maximización</strong><span>Restar cada elemento del valor más grande de la matriz para trabajarla como un problema de minimización.</span></li>
+                <li><strong>Reducir las filas</strong><span>Restar a cada fila su menor valor.</span></li>
+                <li><strong>Reducir las columnas</strong><span>Restar a cada columna su menor valor.</span></li>
+                <li><strong>Cubrir los ceros</strong><span>Trazar el mínimo número de líneas que cubran todos los ceros. Si las líneas son igual a n (orden de la matriz), ya se puede asignar.</span></li>
+                <li><strong>Ajustar la matriz</strong><span>Tomar el menor valor no cubierto, restarlo a los no cubiertos y sumarlo en las intersecciones de líneas. Volver al paso anterior.</span></li>
+                <li><strong>Hacer la asignación</strong><span>Elegir un cero por fila y por columna, empezando por las filas con un solo cero, y sumar los costos originales.</span></li>
+        </ol>
+      </div>
+
+      <!-- Artículo -->
+      <div class="bloque">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 11h8M9 15h8M9 19h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Artículo</h3>
+        <article class="articulo">
+          <!-- ╔══════════════════════════════════════════════════════════════╗
+               ║  ARTÍCULO 2.3 · Modelo de Asignación                            ║
+               ║  Borren el bloque <div class="pendiente"> y peguen aquí el    ║
+               ║  artículo. Ejemplos de lo que pueden usar al final del archivo.║
+               ╚══════════════════════════════════════════════════════════════╝ -->
+          <div class="pendiente">
+            <strong>Artículo en preparación</strong>
+            El desarrollo completo de este tema, con un ejercicio resuelto, se publicará aquí.
+          </div>
+          <!-- ══════════════════════ FIN DEL ARTÍCULO 2.3 ══════════════════════ -->
+        </article>
+      </div>
+    </section>
+
+      <nav class="otros-modulos" aria-label="Otros módulos">
+        <a class="tarjeta" href="modulo-1.html"><span>← Módulo anterior</span><strong>Módulo 1: Programación Lineal y Método Simplex</strong></a><a class="tarjeta sig" href="modulo-3.html"><span>Siguiente módulo →</span><strong>Módulo 3: Redes PERT/CPM e Inventarios</strong></a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- ==================================================================
+       PIEZAS PARA LOS ARTÍCULOS (copien y peguen las que necesiten)
+
+         <h2>Planteamiento del problema</h2>
+         <p>Texto normal. Variables en línea: $x_1$, $x_2$.</p>
+
+         $$\max Z = 3x_1 + 5x_2$$
+
+         <ul><li>Viñeta</li><li>Otra viñeta</li></ul>
+
+         <div class="tabla"><table>
+           <tr><th>Básica</th><th>x1</th><th>x2</th><th>LD</th></tr>
+           <tr><td>Z</td><td>-3</td><td>-5</td><td>0</td></tr>
+         </table></div>
+
+         <figure>
+           <img src="imagenes/modulo2-figura1.png" alt="Descripción de la imagen">
+           <figcaption>Figura 1. Explicación corta.</figcaption>
+         </figure>
+
+         <div class="nota">Dato o consejo resaltado.</div>
+         <div class="respuesta">Solución óptima: x1 = 2, x2 = 6, Z = 36</div>
+       ================================================================== -->
+
+  <!-- ===================== FRANJA DE CARACTERÍSTICAS ===================== -->
+  <section class="franja" aria-label="Características del blog">
+    <div class="contenedor-ancho franja-fila">
+      <div class="caracteristica"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M2 24 32 12l30 12-30 12z" fill="currentColor"/><path d="M14 30v14c0 4 8 8 18 8s18-4 18-8V30L32 37z" fill="currentColor"/><path d="M58 26v16" stroke="currentColor" stroke-width="3"/><circle cx="58" cy="44" r="3" fill="currentColor"/></svg><p>Aprendizaje Práctico<span>con ejemplos reales</span></p></div>
+      <div class="caracteristica"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="38" width="9" height="20" rx="1.5" fill="currentColor"/><rect x="20" y="30" width="9" height="28" rx="1.5" fill="currentColor"/><rect x="34" y="22" width="9" height="36" rx="1.5" fill="currentColor"/><rect x="48" y="14" width="9" height="44" rx="1.5" fill="currentColor"/><path d="M6 28 26 14l10 6L56 4" stroke="#1673ff" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M48 4h8v8" stroke="#1673ff" stroke-width="4" fill="none" stroke-linecap="round"/></svg><p>Recursos Actualizados<span>y de calidad</span></p></div>
+      <div class="caracteristica"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="18" r="9" fill="currentColor"/><circle cx="13" cy="24" r="7" fill="currentColor"/><circle cx="51" cy="24" r="7" fill="currentColor"/><path d="M16 58c0-12 7-18 16-18s16 6 16 18zM1 54c0-9 5-14 12-14 3 0 5 1 7 2-4 4-6 8-6 12zM63 54c0-9-5-14-12-14-3 0-5 1-7 2 4 4 6 8 6 12z" fill="currentColor"/></svg><p>Desarrollado por estudiantes<span>de Ingeniería en Sistemas</span></p></div>
+      <p class="franja-lema">¡Tu conocimiento, nuestra meta!</p>
+    </div>
+  </section>
+
+  <!-- ===================== PIE DE PÁGINA ===================== -->
+  <footer class="pie">
+    <div class="contenedor-ancho pie-fila">
+      <a class="umg" href="index.html">
+        <span class="umg-escudo">
+          <span class="sello" aria-hidden="true">UMG</span>
+          <img src="imagenes/logo-umg.png" alt="Escudo de la Universidad Mariano Gálvez" onerror="this.remove()">
+        </span>
+        <span class="umg-nombre">Universidad Mariano Gálvez<br>de Guatemala</span>
+      </a>
+      <ul class="pie-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="index.html#modulos">Módulos</a></li>
+        <li><a href="index.html#videos">Videos</a></li>
+        <li><a href="index.html#nosotros">Nosotros</a></li>
+      </ul>
+      <div class="redes">
+        <span>Síguenos en:</span>
+        <!-- REDES SOCIALES: cambien el # por el enlace de su canal o página -->
+        <a href="#" aria-label="YouTube" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" fill="currentColor"/><path d="M10 9v6l5-3z" fill="#fff"/></svg></a>
+        <a href="#" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v8h4v-8H17l.5-4h-4V9c0-.6.4-1 1-1z" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg></a>
+      </div>
+      <p class="copy">© <span data-anio>2026</span> Blog de Conocimiento IO · Curso Investigación de Operaciones (026)</p>
+    </div>
+  </footer>
+</body>
+</html>

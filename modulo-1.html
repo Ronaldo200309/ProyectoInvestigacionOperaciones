@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Módulo 1: Programación Lineal y Método Simplex · Blog de Conocimiento IO</title>
+  <meta name="description" content="En este módulo aprenderás a convertir un problema real en un modelo matemático y a encontrar su solución óptima, primero de forma gráfica y luego con el método simplex.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&family=Caveat:wght@700&display=swap">
+  <link rel="stylesheet" href="estilos.css">
+  <!-- Fórmulas matemáticas en los artículos: $x_1$ en línea, $$ ... $$ centrada -->
+  <script>window.MathJax = { tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] } };</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- ===================== ENCABEZADO (igual en todas las páginas) ===================== -->
+  <header class="cabecera">
+    <div class="contenedor-ancho cabecera-fila">
+      <a class="umg" href="index.html">
+        <span class="umg-escudo">
+          <span class="sello" aria-hidden="true">UMG</span>
+          <!-- LOGO DE LA UNIVERSIDAD: guarden la imagen como imagenes/logo-umg.png -->
+          <img src="imagenes/logo-umg.png" alt="Escudo de la Universidad Mariano Gálvez" onerror="this.remove()">
+        </span>
+        <span class="umg-nombre">Universidad Mariano Gálvez<br>de Guatemala</span>
+      </a>
+      <span class="separador" aria-hidden="true"></span>
+      <a class="marca" href="index.html">
+        <svg viewBox="0 0 62 48" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<rect x="13" y="22" width="6" height="14" rx="1" fill="#6cb6ff"/><rect x="22" y="16" width="6" height="20" rx="1" fill="#ffffff"/>
+<rect x="31" y="11" width="6" height="25" rx="1" fill="#6cb6ff"/><rect x="40" y="5" width="6" height="31" rx="1" fill="#ffffff"/>
+<path d="M10 22 L24 12 L32 15 L50 2" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4 34 Q18 30 31 37 Q44 30 58 34 V44 Q44 39 31 46 Q18 39 4 44 Z" fill="#ffffff" stroke="#6cb6ff" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M31 37 V46" stroke="#0a2556" stroke-width="1.5"/></svg>
+        <span><strong>Blog de Conocimiento IO</strong><em>Aplicaciones Prácticas</em></span>
+      </a>
+
+      <button class="menu-boton" type="button" aria-expanded="false" aria-controls="nav" aria-label="Abrir menú"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+      <nav class="nav" id="nav" aria-label="Menú principal">
+        <ul>
+          <li><a class="nav-link" href="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 3l9 8v10h-6v-6H9v6H3z" fill="currentColor"/></svg>Inicio</a></li>
+          <li class="desplegable">
+            <a class="nav-link activo" href="modulo-1.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Módulo 1</a>
+            <ul class="submenu"><li><a href="modulo-1.html#formulacion-de-modelos"><b>1.1</b>Formulación de Modelos</a></li><li><a href="modulo-1.html#programacion-lineal"><b>1.2</b>Programación Lineal</a></li><li><a href="modulo-1.html#metodo-grafico"><b>1.3</b>Método Gráfico</a></li><li><a href="modulo-1.html#metodo-simplex"><b>1.4</b>Método Simplex</a></li><li><a class="ver-modulo" href="modulo-1.html">Ver todo el Módulo 1 →</a></li></ul>
+          </li>
+          <li class="desplegable">
+            <a class="nav-link" href="modulo-2.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Módulo 2</a>
+            <ul class="submenu"><li><a href="modulo-2.html#dualidad-y-sensibilidad"><b>2.1</b>Dualidad y Análisis de Sensibilidad</a></li><li><a href="modulo-2.html#modelo-de-transporte"><b>2.2</b>Modelo de Transporte</a></li><li><a href="modulo-2.html#modelo-de-asignacion"><b>2.3</b>Modelo de Asignación</a></li><li><a class="ver-modulo" href="modulo-2.html">Ver todo el Módulo 2 →</a></li></ul>
+          </li>
+          <li class="desplegable">
+            <a class="nav-link" href="modulo-3.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 13h8M8 17h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Módulo 3</a>
+            <ul class="submenu"><li><a href="modulo-3.html#pert-cpm"><b>3.1</b>Teoría de Redes (PERT/CPM)</a></li><li><a href="modulo-3.html#teoria-de-inventarios"><b>3.2</b>Teoría de Inventarios</a></li><li><a class="ver-modulo" href="modulo-3.html">Ver todo el Módulo 3 →</a></li></ul>
+          </li>
+          <li><a class="nav-link" href="index.html#videos"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" fill="currentColor"/><path d="M10 9v6l5-3z" fill="#0a2556"/></svg>Videos</a></li>
+          <li><a class="nav-link" href="index.html#nosotros"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5" fill="currentColor"/><circle cx="17" cy="9" r="2.8" fill="currentColor"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6zM15 20c0-2-.6-3.6-1.7-4.8 3.6-.6 7.7.8 8.7 4.8z" fill="currentColor"/></svg>Nosotros</a></li>
+        </ul>
+        <form class="buscar" role="search">
+          <input id="buscar" type="search" placeholder="Buscar..." autocomplete="off" aria-label="Buscar un tema">
+          <button type="submit" aria-label="Buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+          <ul class="resultados" hidden></ul>
+        </form>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===================== PORTADA DEL MÓDULO ===================== -->
+    <section class="hero modulo-hero">
+      <div class="contenedor-ancho slide-fila">
+        <div>
+          <nav class="migas" aria-label="Ruta"><a href="index.html">Inicio</a><span>/</span><span>Módulo 1</span></nav>
+          <span class="pastilla grande" style="background:rgba(255,255,255,.16)">Módulo 1</span>
+          <h1>Programación Lineal y Método Simplex</h1>
+          <p>En este módulo aprenderás a convertir un problema real en un modelo matemático y a encontrar su solución óptima, primero de forma gráfica y luego con el método simplex.</p>
+          <ul class="datos"><li>4 temas</li><li>3 videos tutoriales</li><li>Artículos y procedimientos</li></ul>
+          <ul class="indice-temas" aria-label="Temas del módulo"><li><a href="#formulacion-de-modelos"><b>1.1</b>Formulación de Modelos</a></li><li><a href="#programacion-lineal"><b>1.2</b>Programación Lineal</a></li><li><a href="#metodo-grafico"><b>1.3</b>Método Gráfico</a></li><li><a href="#metodo-simplex"><b>1.4</b>Método Simplex</a></li></ul>
+        </div>
+        <div class="slide-ilus"><svg viewBox="0 0 440 310" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="440" height="310" rx="22" fill="#ffffff" fill-opacity=".96"/><svg x="20" y="20" width="400" height="270" viewBox="0 0 240 160" role="img" aria-label="Región factible de un modelo de programación lineal" xmlns="http://www.w3.org/2000/svg"><defs><marker id="pf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0a2556"/></marker></defs><line x1="55" y1="15" x2="55" y2="140" stroke="#6cb6ff" stroke-opacity=".35"/><line x1="80" y1="15" x2="80" y2="140" stroke="#6cb6ff" stroke-opacity=".35"/><line x1="105" y1="15" x2="105" y2="140" stroke="#6cb6ff" stroke-opacity=".35"/><line x1="130" y1="15" x2="130" y2="140" stroke="#6cb6ff" stroke-opacity=".35"/><line x1="155" y1="15" x2="155" y2="140" stroke="#6cb6ff" stroke-opacity=".35"/><line x1="180" y1="15" x2="180" y2="140" stroke="#6cb6ff" stroke-opacity=".35"/><line x1="205" y1="15" x2="205" y2="140" stroke="#6cb6ff" stroke-opacity=".35"/><line x1="30" y1="115" x2="225" y2="115" stroke="#6cb6ff" stroke-opacity=".35"/><line x1="30" y1="90" x2="225" y2="90" stroke="#6cb6ff" stroke-opacity=".35"/><line x1="30" y1="65" x2="225" y2="65" stroke="#6cb6ff" stroke-opacity=".35"/><line x1="30" y1="40" x2="225" y2="40" stroke="#6cb6ff" stroke-opacity=".35"/><line x1="30" y1="15" x2="225" y2="15" stroke="#6cb6ff" stroke-opacity=".35"/>
+<polygon points="30,30 110,42 150,100 168,140 30,140" fill="#1673ff" fill-opacity=".38" stroke="#0f5ad6" stroke-width="2.5" stroke-linejoin="round"/>
+<line x1="60" y1="20" x2="215" y2="78" stroke="#ffb020" stroke-width="2" stroke-dasharray="6 5"/>
+<line x1="30" y1="148" x2="30" y2="8" stroke="#0a2556" stroke-width="2.2" marker-end="url(#pf)"/>
+<line x1="22" y1="140" x2="232" y2="140" stroke="#0a2556" stroke-width="2.2" marker-end="url(#pf)"/>
+<circle cx="30" cy="30" r="4.5" fill="#fff" stroke="#0a2556" stroke-width="2"/><circle cx="110" cy="42" r="6" fill="#ffb020" stroke="#0a2556" stroke-width="2"/>
+<circle cx="150" cy="100" r="4.5" fill="#fff" stroke="#0a2556" stroke-width="2"/><circle cx="168" cy="140" r="4.5" fill="#fff" stroke="#0a2556" stroke-width="2"/>
+<text x="10" y="16" font-family="Poppins,sans-serif" font-weight="700" font-size="13" fill="#0a2556">x₂</text>
+<text x="222" y="156" font-family="Poppins,sans-serif" font-weight="700" font-size="13" fill="#0a2556">x₁</text></svg></svg></div>
+      </div>
+    </section>
+
+    <div class="seccion contenedor-ancho">
+      <h2 class="titulo-linea"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3 6.6 7.2.8-5.4 4.9 1.5 7.1L12 17.8 5.7 21.4l1.5-7.1L1.8 9.4 9 8.6z" fill="currentColor"/></svg>Temas del Módulo 1</span></h2>
+
+    <!-- ████████████████████████████████████████████████████████████████████
+         TEMA 1.1 · FORMULACIÓN DE MODELOS
+         ████████████████████████████████████████████████████████████████████ -->
+    <section class="tarjeta tema" id="formulacion-de-modelos">
+      <div class="tema-cabeza">
+        <span class="tema-num">1.1</span>
+        <div><h2>Formulación de Modelos</h2><p>El primer paso: convertir un problema escrito en palabras en un modelo matemático.</p></div>
+      </div>
+
+      <div class="tema-fila">
+        <!-- Definición general -->
+        <div class="bloque definicion">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v15h-6a2 2 0 0 0-2 2 2 2 0 0 0-2-2H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 5v16" stroke="currentColor" stroke-width="2"/></svg>¿Qué es?</h3>
+              <p>La <strong>formulación de modelos</strong> es el proceso de traducir un problema real, descrito en palabras, a un modelo matemático que se pueda resolver. Es el primer paso de la Investigación de Operaciones y el más importante: si el modelo está mal planteado, la solución no servirá en la práctica aunque los cálculos sean correctos.</p>
+              <p>Todo modelo de optimización tiene tres componentes: las <strong>variables de decisión</strong> (lo que se puede controlar, como cuántas unidades producir), la <strong>función objetivo</strong> (lo que se quiere maximizar o minimizar, como la ganancia o el costo) y las <strong>restricciones</strong> (los límites de recursos, capacidad, demanda o tiempo).</p>
+          <p class="formula-clave"><b>Idea clave:</b> Max o Min Z = c₁x₁ + c₂x₂ + … + cₙxₙ, sujeto a restricciones y xⱼ ≥ 0</p>
+        </div>
+
+        <!-- Video tutorial -->
+        <div class="bloque">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 10 6-3v10l-6-3z" fill="currentColor"/></svg>Video tutorial</h3>
+              <!-- ╔══════════════════════════════════════════════════════════════╗
+                   ║  ▶ VIDEO 1 DEL MÓDULO 1: Formulación de Modelos y Programación Lineal║
+                   ║  Peguen el enlace de YouTube entre las comillas de data-video ║
+                   ║  Ejemplo: data-video="https://youtu.be/AbCdEfGhIjK"           ║
+                   ╚══════════════════════════════════════════════════════════════╝ -->
+              <div class="video" id="video-1-1" data-video="" data-titulo="Video 1 · Formulación de Modelos y Programación Lineal"></div>
+              <!-- ═════════════════════ FIN DEL VIDEO 1 ═════════════════════ -->
+              <p class="video-titulo">Video 1 · Formulación de Modelos y Programación Lineal</p>
+        </div>
+      </div>
+
+      <!-- Procedimiento paso a paso -->
+      <div class="bloque procedimiento">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="4" cy="6" r="2" fill="currentColor"/><circle cx="4" cy="12" r="2" fill="currentColor"/><circle cx="4" cy="18" r="2" fill="currentColor"/></svg>Procedimiento paso a paso</h3>
+        <ol>
+                <li><strong>Leer y comprender el problema</strong><span>Identificar qué se pide decidir, qué se quiere lograr y qué datos se tienen. Ordenar los datos en una tabla ayuda mucho.</span></li>
+                <li><strong>Definir las variables de decisión</strong><span>Nombrar cada variable (x₁, x₂, …) indicando qué representa y en qué unidades, por ejemplo: x₁ = sillas producidas por semana.</span></li>
+                <li><strong>Plantear la función objetivo</strong><span>Decidir si se maximiza o minimiza y escribir Z como la suma de cada variable multiplicada por su ganancia o costo unitario.</span></li>
+                <li><strong>Identificar las restricciones</strong><span>Ubicar cada recurso limitado o requisito (horas, materia prima, demanda mínima) y escribirlo como desigualdad (≤, ≥) o igualdad.</span></li>
+                <li><strong>Agregar la no negatividad</strong><span>Indicar que las variables no pueden tomar valores negativos: x₁, x₂, … ≥ 0.</span></li>
+                <li><strong>Revisar el modelo</strong><span>Verificar que las unidades coincidan en cada restricción y que el modelo incluya todas las condiciones del enunciado.</span></li>
+        </ol>
+      </div>
+
+      <!-- Artículo -->
+      <div class="bloque">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 11h8M9 15h8M9 19h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Artículo</h3>
+        <article class="articulo">
+          <!-- ╔══════════════════════════════════════════════════════════════╗
+               ║  ARTÍCULO 1.1 · Formulación de Modelos                          ║
+               ║  Borren el bloque <div class="pendiente"> y peguen aquí el    ║
+               ║  artículo. Ejemplos de lo que pueden usar al final del archivo.║
+               ╚══════════════════════════════════════════════════════════════╝ -->
+          <div class="pendiente">
+            <strong>Artículo en preparación</strong>
+            El desarrollo completo de este tema, con un ejercicio resuelto, se publicará aquí.
+          </div>
+          <!-- ══════════════════════ FIN DEL ARTÍCULO 1.1 ══════════════════════ -->
+        </article>
+      </div>
+    </section>
+
+    <!-- ████████████████████████████████████████████████████████████████████
+         TEMA 1.2 · PROGRAMACIÓN LINEAL
+         ████████████████████████████████████████████████████████████████████ -->
+    <section class="tarjeta tema" id="programacion-lineal">
+      <div class="tema-cabeza">
+        <span class="tema-num">1.2</span>
+        <div><h2>Programación Lineal</h2><p>Optimizar un objetivo cuando la función y todas las restricciones son lineales.</p></div>
+      </div>
+
+      <div class="tema-fila">
+        <!-- Definición general -->
+        <div class="bloque definicion">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v15h-6a2 2 0 0 0-2 2 2 2 0 0 0-2-2H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 5v16" stroke="currentColor" stroke-width="2"/></svg>¿Qué es?</h3>
+              <p>La <strong>programación lineal (PL)</strong> es una técnica de optimización que busca el mejor valor posible, máximo o mínimo, de una función objetivo lineal sujeta a un conjunto de restricciones que también son lineales. Se utiliza para repartir recursos limitados, como materia prima, horas máquina, personal o dinero, entre actividades que compiten por ellos.</p>
+              <p>Para resolver un problema con PL deben cumplirse cuatro supuestos: <strong>proporcionalidad, aditividad, divisibilidad y certidumbre</strong>. Un modelo puede tener solución óptima única, soluciones óptimas múltiples, ser no acotado o no tener solución factible.</p>
+          <p class="formula-clave"><b>Idea clave:</b> Forma estándar: Max Z = cx, sujeto a Ax = b, x ≥ 0, b ≥ 0</p>
+        </div>
+
+        <!-- Video tutorial -->
+        <div class="bloque">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 10 6-3v10l-6-3z" fill="currentColor"/></svg>Video tutorial</h3>
+              <!-- Este tema se explica en el VIDEO 1, que está en el tema 1.1.
+                   Si grabaron un video aparte para este tema, cambien este bloque
+                   por un <div class="video" data-video="" ...> como el de los demás temas. -->
+              <div class="video-ref">
+                <p>Este tema se explica junto con <strong>Formulación de Modelos</strong> en el <strong>Video 1: Formulación de Modelos y Programación Lineal</strong>.</p>
+                <a class="boton oscuro flecha-der" href="#video-1-1">Ver el Video 1</a>
+              </div>
+        </div>
+      </div>
+
+      <!-- Procedimiento paso a paso -->
+      <div class="bloque procedimiento">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="4" cy="6" r="2" fill="currentColor"/><circle cx="4" cy="12" r="2" fill="currentColor"/><circle cx="4" cy="18" r="2" fill="currentColor"/></svg>Procedimiento paso a paso</h3>
+        <ol>
+                <li><strong>Verificar los supuestos</strong><span>Comprobar que la contribución de cada variable es proporcional a su valor, que los efectos se suman, que las variables pueden ser fraccionarias y que los datos son conocidos.</span></li>
+                <li><strong>Escribir el modelo en forma canónica</strong><span>Función objetivo y restricciones con las variables del lado izquierdo y las constantes del lado derecho.</span></li>
+                <li><strong>Convertir a forma estándar</strong><span>Sumar una variable de holgura (+s) en cada restricción ≤ y restar una variable de exceso (−e) en cada restricción ≥ para convertirlas en igualdades.</span></li>
+                <li><strong>Revisar los lados derechos</strong><span>Si algún lado derecho es negativo, multiplicar la restricción por −1 y cambiar el sentido de la desigualdad.</span></li>
+                <li><strong>Elegir el método de solución</strong><span>Con dos variables se puede usar el método gráfico; con más variables se usa el método simplex o un software como Solver o LINDO.</span></li>
+                <li><strong>Interpretar la solución</strong><span>Explicar qué significan los valores de las variables, el valor de Z y las holguras en el contexto del problema.</span></li>
+        </ol>
+      </div>
+
+      <!-- Artículo -->
+      <div class="bloque">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 11h8M9 15h8M9 19h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Artículo</h3>
+        <article class="articulo">
+          <!-- ╔══════════════════════════════════════════════════════════════╗
+               ║  ARTÍCULO 1.2 · Programación Lineal                             ║
+               ║  Borren el bloque <div class="pendiente"> y peguen aquí el    ║
+               ║  artículo. Ejemplos de lo que pueden usar al final del archivo.║
+               ╚══════════════════════════════════════════════════════════════╝ -->
+          <div class="pendiente">
+            <strong>Artículo en preparación</strong>
+            El desarrollo completo de este tema, con un ejercicio resuelto, se publicará aquí.
+          </div>
+          <!-- ══════════════════════ FIN DEL ARTÍCULO 1.2 ══════════════════════ -->
+        </article>
+      </div>
+    </section>
+
+    <!-- ████████████████████████████████████████████████████████████████████
+         TEMA 1.3 · MÉTODO GRÁFICO
+         ████████████████████████████████████████████████████████████████████ -->
+    <section class="tarjeta tema" id="metodo-grafico">
+      <div class="tema-cabeza">
+        <span class="tema-num">1.3</span>
+        <div><h2>Método Gráfico</h2><p>Resolver modelos de dos variables dibujando la región factible y buscando el mejor vértice.</p></div>
+      </div>
+
+      <div class="tema-fila">
+        <!-- Definición general -->
+        <div class="bloque definicion">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v15h-6a2 2 0 0 0-2 2 2 2 0 0 0-2-2H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 5v16" stroke="currentColor" stroke-width="2"/></svg>¿Qué es?</h3>
+              <p>El <strong>método gráfico</strong> es un procedimiento para resolver modelos de programación lineal que tienen solo dos variables de decisión. Consiste en dibujar cada restricción en el plano cartesiano y encontrar la <strong>región factible</strong>: el conjunto de puntos que cumplen todas las restricciones al mismo tiempo.</p>
+              <p>Se basa en un resultado fundamental de la PL: si existe una solución óptima, esta se encuentra en un <strong>vértice</strong> de la región factible. Por eso basta con evaluar la función objetivo en cada vértice, o desplazar la recta de la función objetivo hasta el último punto de la región que toca.</p>
+          <p class="formula-clave"><b>Idea clave:</b> Solución óptima = vértice de la región factible con el mayor (o menor) valor de Z</p>
+        </div>
+
+        <!-- Video tutorial -->
+        <div class="bloque">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 10 6-3v10l-6-3z" fill="currentColor"/></svg>Video tutorial</h3>
+              <!-- ╔══════════════════════════════════════════════════════════════╗
+                   ║  ▶ VIDEO 2 DEL MÓDULO 1: Método Gráfico                              ║
+                   ║  Peguen el enlace de YouTube entre las comillas de data-video ║
+                   ║  Ejemplo: data-video="https://youtu.be/AbCdEfGhIjK"           ║
+                   ╚══════════════════════════════════════════════════════════════╝ -->
+              <div class="video" id="video-1-2" data-video="" data-titulo="Video 2 · Método Gráfico"></div>
+              <!-- ═════════════════════ FIN DEL VIDEO 2 ═════════════════════ -->
+              <p class="video-titulo">Video 2 · Método Gráfico</p>
+        </div>
+      </div>
+
+      <!-- Procedimiento paso a paso -->
+      <div class="bloque procedimiento">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="4" cy="6" r="2" fill="currentColor"/><circle cx="4" cy="12" r="2" fill="currentColor"/><circle cx="4" cy="18" r="2" fill="currentColor"/></svg>Procedimiento paso a paso</h3>
+        <ol>
+                <li><strong>Convertir cada restricción en igualdad</strong><span>Escribir la ecuación de la recta y encontrar sus cortes con los ejes haciendo x₁ = 0 y luego x₂ = 0.</span></li>
+                <li><strong>Graficar las rectas</strong><span>Dibujar cada restricción en el plano x₁–x₂, solo en el primer cuadrante por la condición de no negatividad.</span></li>
+                <li><strong>Sombrear el lado válido</strong><span>Usar un punto de prueba, como el origen (0, 0), para saber qué lado de cada recta cumple la desigualdad.</span></li>
+                <li><strong>Identificar la región factible</strong><span>Es la zona donde coinciden todas las áreas sombreadas. Si no existe, el problema no tiene solución factible.</span></li>
+                <li><strong>Calcular los vértices</strong><span>Encontrar las coordenadas de cada esquina resolviendo el sistema de ecuaciones de las dos rectas que se cruzan en ella.</span></li>
+                <li><strong>Evaluar Z en cada vértice</strong><span>Sustituir cada vértice en la función objetivo y elegir el de mayor valor (maximizar) o menor valor (minimizar).</span></li>
+        </ol>
+      </div>
+
+      <!-- Artículo -->
+      <div class="bloque">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 11h8M9 15h8M9 19h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Artículo</h3>
+        <article class="articulo">
+          <!-- ╔══════════════════════════════════════════════════════════════╗
+               ║  ARTÍCULO 1.3 · Método Gráfico                                  ║
+               ║  Borren el bloque <div class="pendiente"> y peguen aquí el    ║
+               ║  artículo. Ejemplos de lo que pueden usar al final del archivo.║
+               ╚══════════════════════════════════════════════════════════════╝ -->
+          <div class="pendiente">
+            <strong>Artículo en preparación</strong>
+            El desarrollo completo de este tema, con un ejercicio resuelto, se publicará aquí.
+          </div>
+          <!-- ══════════════════════ FIN DEL ARTÍCULO 1.3 ══════════════════════ -->
+        </article>
+      </div>
+    </section>
+
+    <!-- ████████████████████████████████████████████████████████████████████
+         TEMA 1.4 · MÉTODO SIMPLEX
+         ████████████████████████████████████████████████████████████████████ -->
+    <section class="tarjeta tema" id="metodo-simplex">
+      <div class="tema-cabeza">
+        <span class="tema-num">1.4</span>
+        <div><h2>Método Simplex</h2><p>El algoritmo que resuelve modelos lineales de cualquier tamaño, iteración por iteración.</p></div>
+      </div>
+
+      <div class="tema-fila">
+        <!-- Definición general -->
+        <div class="bloque definicion">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v15h-6a2 2 0 0 0-2 2 2 2 0 0 0-2-2H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 5v16" stroke="currentColor" stroke-width="2"/></svg>¿Qué es?</h3>
+              <p>El <strong>método simplex</strong> es un algoritmo algebraico, desarrollado por George Dantzig en 1947, que resuelve modelos de programación lineal con cualquier número de variables. Parte de una solución básica factible y avanza de un vértice a otro vértice vecino, mejorando la función objetivo en cada iteración, hasta que ya no se puede mejorar.</p>
+              <p>Todo el procedimiento se organiza en la <strong>tabla simplex</strong>: en cada iteración se elige una variable que entra a la base, una que sale, y se actualiza la tabla con operaciones entre filas (pivoteo).</p>
+          <p class="formula-clave"><b>Idea clave:</b> Prueba de razón mínima: fila pivote = mín (LD ÷ coeficiente positivo de la columna pivote)</p>
+        </div>
+
+        <!-- Video tutorial -->
+        <div class="bloque">
+          <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 10 6-3v10l-6-3z" fill="currentColor"/></svg>Video tutorial</h3>
+              <!-- ╔══════════════════════════════════════════════════════════════╗
+                   ║  ▶ VIDEO 3 DEL MÓDULO 1: Método Simplex                              ║
+                   ║  Peguen el enlace de YouTube entre las comillas de data-video ║
+                   ║  Ejemplo: data-video="https://youtu.be/AbCdEfGhIjK"           ║
+                   ╚══════════════════════════════════════════════════════════════╝ -->
+              <div class="video" id="video-1-3" data-video="" data-titulo="Video 3 · Método Simplex"></div>
+              <!-- ═════════════════════ FIN DEL VIDEO 3 ═════════════════════ -->
+              <p class="video-titulo">Video 3 · Método Simplex</p>
+        </div>
+      </div>
+
+      <!-- Procedimiento paso a paso -->
+      <div class="bloque procedimiento">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="4" cy="6" r="2" fill="currentColor"/><circle cx="4" cy="12" r="2" fill="currentColor"/><circle cx="4" cy="18" r="2" fill="currentColor"/></svg>Procedimiento paso a paso</h3>
+        <ol>
+                <li><strong>Llevar el modelo a forma estándar</strong><span>Agregar variables de holgura en las restricciones ≤ y escribir la función objetivo como Z − c₁x₁ − c₂x₂ − … = 0.</span></li>
+                <li><strong>Construir la tabla inicial</strong><span>Colocar los coeficientes de cada restricción y de la fila Z. Las variables de holgura forman la base inicial.</span></li>
+                <li><strong>Elegir la variable que entra</strong><span>En maximización, es la columna con el coeficiente más negativo en la fila Z: la columna pivote.</span></li>
+                <li><strong>Elegir la variable que sale</strong><span>Dividir cada lado derecho entre el coeficiente positivo de la columna pivote. La fila con la razón más pequeña es la fila pivote.</span></li>
+                <li><strong>Hacer el pivoteo</strong><span>Dividir la fila pivote entre el elemento pivote y hacer cero el resto de la columna pivote con operaciones entre filas.</span></li>
+                <li><strong>Verificar optimalidad</strong><span>Si ya no hay coeficientes negativos en la fila Z, la tabla es óptima. Si los hay, repetir desde el paso 3.</span></li>
+                <li><strong>Leer la solución</strong><span>Las variables básicas toman el valor de su lado derecho, las no básicas valen cero y el valor óptimo de Z aparece en la fila Z.</span></li>
+        </ol>
+      </div>
+
+      <!-- Artículo -->
+      <div class="bloque">
+        <h3 class="bloque-titulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 11h8M9 15h8M9 19h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Artículo</h3>
+        <article class="articulo">
+          <!-- ╔══════════════════════════════════════════════════════════════╗
+               ║  ARTÍCULO 1.4 · Método Simplex                                  ║
+               ║  Borren el bloque <div class="pendiente"> y peguen aquí el    ║
+               ║  artículo. Ejemplos de lo que pueden usar al final del archivo.║
+               ╚══════════════════════════════════════════════════════════════╝ -->
+          <div class="pendiente">
+            <strong>Artículo en preparación</strong>
+            El desarrollo completo de este tema, con un ejercicio resuelto, se publicará aquí.
+          </div>
+          <!-- ══════════════════════ FIN DEL ARTÍCULO 1.4 ══════════════════════ -->
+        </article>
+      </div>
+    </section>
+
+      <nav class="otros-modulos" aria-label="Otros módulos">
+        <a class="tarjeta" href="index.html"><span>← Volver</span><strong>Página principal</strong></a><a class="tarjeta sig" href="modulo-2.html"><span>Siguiente módulo →</span><strong>Módulo 2: Dualidad, Transporte y Asignación</strong></a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- ==================================================================
+       PIEZAS PARA LOS ARTÍCULOS (copien y peguen las que necesiten)
+
+         <h2>Planteamiento del problema</h2>
+         <p>Texto normal. Variables en línea: $x_1$, $x_2$.</p>
+
+         $$\max Z = 3x_1 + 5x_2$$
+
+         <ul><li>Viñeta</li><li>Otra viñeta</li></ul>
+
+         <div class="tabla"><table>
+           <tr><th>Básica</th><th>x1</th><th>x2</th><th>LD</th></tr>
+           <tr><td>Z</td><td>-3</td><td>-5</td><td>0</td></tr>
+         </table></div>
+
+         <figure>
+           <img src="imagenes/modulo1-figura1.png" alt="Descripción de la imagen">
+           <figcaption>Figura 1. Explicación corta.</figcaption>
+         </figure>
+
+         <div class="nota">Dato o consejo resaltado.</div>
+         <div class="respuesta">Solución óptima: x1 = 2, x2 = 6, Z = 36</div>
+       ================================================================== -->
+
+  <!-- ===================== FRANJA DE CARACTERÍSTICAS ===================== -->
+  <section class="franja" aria-label="Características del blog">
+    <div class="contenedor-ancho franja-fila">
+      <div class="caracteristica"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M2 24 32 12l30 12-30 12z" fill="currentColor"/><path d="M14 30v14c0 4 8 8 18 8s18-4 18-8V30L32 37z" fill="currentColor"/><path d="M58 26v16" stroke="currentColor" stroke-width="3"/><circle cx="58" cy="44" r="3" fill="currentColor"/></svg><p>Aprendizaje Práctico<span>con ejemplos reales</span></p></div>
+      <div class="caracteristica"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="38" width="9" height="20" rx="1.5" fill="currentColor"/><rect x="20" y="30" width="9" height="28" rx="1.5" fill="currentColor"/><rect x="34" y="22" width="9" height="36" rx="1.5" fill="currentColor"/><rect x="48" y="14" width="9" height="44" rx="1.5" fill="currentColor"/><path d="M6 28 26 14l10 6L56 4" stroke="#1673ff" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M48 4h8v8" stroke="#1673ff" stroke-width="4" fill="none" stroke-linecap="round"/></svg><p>Recursos Actualizados<span>y de calidad</span></p></div>
+      <div class="caracteristica"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="18" r="9" fill="currentColor"/><circle cx="13" cy="24" r="7" fill="currentColor"/><circle cx="51" cy="24" r="7" fill="currentColor"/><path d="M16 58c0-12 7-18 16-18s16 6 16 18zM1 54c0-9 5-14 12-14 3 0 5 1 7 2-4 4-6 8-6 12zM63 54c0-9-5-14-12-14-3 0-5 1-7 2 4 4 6 8 6 12z" fill="currentColor"/></svg><p>Desarrollado por estudiantes<span>de Ingeniería en Sistemas</span></p></div>
+      <p class="franja-lema">¡Tu conocimiento, nuestra meta!</p>
+    </div>
+  </section>
+
+  <!-- ===================== PIE DE PÁGINA ===================== -->
+  <footer class="pie">
+    <div class="contenedor-ancho pie-fila">
+      <a class="umg" href="index.html">
+        <span class="umg-escudo">
+          <span class="sello" aria-hidden="true">UMG</span>
+          <img src="imagenes/logo-umg.png" alt="Escudo de la Universidad Mariano Gálvez" onerror="this.remove()">
+        </span>
+        <span class="umg-nombre">Universidad Mariano Gálvez<br>de Guatemala</span>
+      </a>
+      <ul class="pie-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="index.html#modulos">Módulos</a></li>
+        <li><a href="index.html#videos">Videos</a></li>
+        <li><a href="index.html#nosotros">Nosotros</a></li>
+      </ul>
+      <div class="redes">
+        <span>Síguenos en:</span>
+        <!-- REDES SOCIALES: cambien el # por el enlace de su canal o página -->
+        <a href="#" aria-label="YouTube" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" fill="currentColor"/><path d="M10 9v6l5-3z" fill="#fff"/></svg></a>
+        <a href="#" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v8h4v-8H17l.5-4h-4V9c0-.6.4-1 1-1z" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg></a>
+      </div>
+      <p class="copy">© <span data-anio>2026</span> Blog de Conocimiento IO · Curso Investigación de Operaciones (026)</p>
+    </div>
+  </footer>
+</body>
+</html>
